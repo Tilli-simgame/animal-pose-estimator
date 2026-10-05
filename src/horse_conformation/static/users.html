@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Käyttäjät – Hevosen rakenneanalyysi</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Käyttäjät</h1>
+    <p class="sub">Tunnusten luonti ja käyttöoikeudet</p>
+  </div>
+  <nav id="user-bar" class="user-bar"></nav>
+</header>
+
+<main class="users-page">
+  <section class="card">
+    <h2>Uusi käyttäjä</h2>
+    <form id="new-user" class="fields" autocomplete="off">
+      <label>Käyttäjätunnus <input name="username" maxlength="50" required></label>
+      <label>Näyttönimi <input name="display_name" maxlength="100" placeholder="esim. tuomarin nimi"></label>
+      <label>Rooli
+        <select name="role">
+          <option value="judge">Tuomari</option>
+          <option value="admin">Ylläpitäjä</option>
+        </select>
+      </label>
+      <div class="field-button"><button type="submit">Luo käyttäjä</button></div>
+    </form>
+    <p id="new-user-msg" class="form-msg" role="status"></p>
+  </section>
+
+  <section class="card">
+    <h2>Kaikki käyttäjät</h2>
+    <p class="hint">Uusi käyttäjä saa väliaikaisen salasanan, jonka hän voi vaihtaa kirjauduttuaan. Salasana näytetään vain kerran – välitä se käyttäjälle turvallisesti. Suljettu tunnus kirjataan heti ulos.</p>
+    <div class="table-wrap">
+      <table class="users">
+        <thead>
+          <tr><th>Tunnus</th><th>Nimi</th><th>Rooli</th><th>Tila</th><th>Salasana</th></tr>
+        </thead>
+        <tbody id="user-rows"></tbody>
+      </table>
+    </div>
+    <p id="table-msg" class="form-msg" role="status"></p>
+  </section>
+</main>
+
+<script src="/static/common.js"></script>
+<script src="/static/users.js"></script>
+</body>
+</html>

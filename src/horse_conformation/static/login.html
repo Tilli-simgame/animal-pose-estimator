@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kirjaudu – Hevosen rakenneanalyysi</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<main class="login-page">
+  <form id="login" class="card login-card">
+    <h1>Hevosen rakenneanalyysi</h1>
+    <label>Käyttäjätunnus <input name="username" autocomplete="username" required autofocus></label>
+    <label>Salasana <input name="password" type="password" autocomplete="current-password" required></label>
+    <button type="submit">Kirjaudu</button>
+    <p id="msg" class="form-msg error" role="alert"></p>
+    <p class="hint">Tunnukset saat palvelun ylläpitäjältä.</p>
+  </form>
+</main>
+<script>
+  "use strict";
+  const form = document.getElementById("login");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const msg = document.getElementById("msg");
+    msg.textContent = "";
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: form.username.value, password: form.password.value }),
+    });
+    if (res.ok) {
+      location.href = "/";
+    } else {
+      const data = await res.json().catch(() => ({}));
+      msg.textContent = typeof data.detail === "string" ? data.detail : "Kirjautuminen epäonnistui.";
+      form.password.value = "";
+      form.password.focus();
+    }
+  });
+</script>
+</body>
+</html>

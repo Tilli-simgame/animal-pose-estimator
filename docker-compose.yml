@@ -1,0 +1,30 @@
+# Production: the app behind Caddy, which gets and renews the HTTPS certificate.
+# Set DOMAIN in .env (see .env.example), then: docker compose up -d --build
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - ./data:/data  # users, sessions, saved photos and annotations
+    expose:
+      - "8000"
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:?Aseta DOMAIN tiedostoon .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:
